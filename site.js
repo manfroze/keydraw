@@ -28,13 +28,9 @@ var keyboards = 21;
 	/* TOGGLE WHITE ON PRESS */
 
 	$(document).keydown(function(e){
-
-		for (var i = 0; i < keys.length; i++) {
-			if ( e.key == keys[i] ) {
-				$('.active .key-'+keys[i]).toggleClass('on');
-			}
-		}
-
+		
+		$('.active .key-' + e.key).toggleClass('on');
+		
 	});
 
 	/* ACTIVE KEYBOARD */
