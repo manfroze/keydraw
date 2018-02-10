@@ -29,7 +29,9 @@ var keyboards = 21;
 
 	$(document).keydown(function(e){
 		
-		$('.active .key-' + e.key).toggleClass('on');
+		if (keys.indexOf(e.key) > -1) {
+			$('.active .key-' + e.key).toggleClass('on');
+		}
 		
 	});
 
