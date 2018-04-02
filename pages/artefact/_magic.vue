@@ -7,7 +7,7 @@
 
         :hidden="true"
       />
-      <action-bar :artefact="true" />
+      <action-bar kind="artefact" />
     </div>
   </div>
 </template>

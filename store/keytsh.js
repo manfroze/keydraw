@@ -6,12 +6,12 @@ import {
   isEmpty as _isEmpty,
   isNil as _isNil,
   last as _last
-} from 'lodash'
+} from 'lodash-es'
 
 import commands from '../keytsh/commands'
 import { parseCommand } from '../keytsh/system/parse'
 
-import { UidGenerator } from '../keytsh/system/uid'
+import UidGenerator from '../libs/uid'
 
 const historyUids = new UidGenerator()
 const bufferUids = new UidGenerator()
@@ -23,17 +23,7 @@ export const state = () => ({
   commandPrompt: false,
 
   historyLookup: -1,
-  history: [
-    {
-      commandLine: 'test',
-    },
-    {
-      commandLine: 'test2',
-    },
-    {
-      commandLine: 'test3',
-    },
-  ],
+  history: [],
 
   buffer: [],
 

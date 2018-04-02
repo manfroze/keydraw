@@ -8,7 +8,7 @@ const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
 } : {}
 
 module.exports = {
-  mode: "spa",
+  mode: 'spa',
   css: [
     '~/assets/main.scss'
   ],
@@ -25,7 +25,7 @@ module.exports = {
 
   modules: [
     '@nuxtjs/dotenv',
-    '@nuxtjs/webpackmonitor',
+    // '@nuxtjs/webpackmonitor',
     '@nuxtjs/axios',
 
     'nuxt-fontawesome',
@@ -38,7 +38,7 @@ module.exports = {
     imports: [
       {
         set: '@fortawesome/fontawesome-free-solid',
-        icons: ['faArrowsAlt', 'faLock', 'faKeyboard', 'faSpaceShuttle'],
+        icons: ['faArrowsAlt', 'faLock', 'faKeyboard', 'faSpaceShuttle', 'faCreditCard'],
         // Always import specific icons you need, so that we can avoid loading the entire library of Alexandria of fonts
       },
       // {

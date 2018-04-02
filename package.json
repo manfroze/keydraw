@@ -7,10 +7,12 @@
   "author": "Manfredi Pumo <manfroze@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "dev": "nuxt",
     "build": "nuxt build",
     "generate": "nuxt generate",
-    "deploy": "cross-env DEPLOY_ENV='GH_PAGES' NODE_ENV='production' npm run build && push-dir --dir=dist --branch=gh-pages --cleanup"
+    "deploy": "cross-env DEPLOY_ENV='GH_PAGES' NODE_ENV='production' npm run build && push-dir --dir=dist --branch=gh-pages --cleanup",
+    "start": "nuxt start"
   },
   "config": {
     "nuxt": {
@@ -39,9 +41,10 @@
     "@nuxtjs/axios": "^5.0.1",
     "@nuxtjs/dotenv": "^1.1.0",
     "actioncable": "^5.1.5",
+    "bignumber.js": "^6.0.0",
     "classnames": "^2.2.5",
-    "lodash": "^4.17.5",
-    "nuxt": "^1.3.0",
+    "lodash-es": "^4.17.8",
+    "nuxt": "^1.4.0",
     "nuxt-fontawesome": "^0.1.3",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1",

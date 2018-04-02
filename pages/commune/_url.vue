@@ -10,7 +10,7 @@
 
         :hidden="hidden"
       />
-      <action-bar :commune="true" />
+      <action-bar kind="commune" />
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import ActionCable from 'actioncable'
 
-import { findIndex as _findIndex } from 'lodash'
+import { findIndex as _findIndex } from 'lodash-es'
 
 import Instructions from '../../components/Instructions'
 import BaseCanvas from '../../components/BaseCanvas'
