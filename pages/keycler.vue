@@ -14,15 +14,15 @@
               'asset',
               'menuItem',
               {
-                costly: asset.cost.isGreaterThan(funds),
-                hidden: asset.cost.isGreaterThan(funds.multipliedBy(1.5)) && !assets[key],
+                costly: asset.cost.gt(funds),
+                hidden: asset.cost.gt(funds.times(1.5)) && !assets[key],
               },
             ]"
             v-for="(asset, key) in availableAssets"
             :key="key">
             <span class="txtLabel">{{ asset.key }}</span>
             {{ asset.name }}
-            <span class="txtLabel">€{{ asset.cost.toFormat() }}</span>
+            <span class="txtLabel">€{{ asset.cost.toString() }}</span>
             <span class="quantity">{{ assets[key] || 0 }}</span>
           </div>
         </div>
@@ -32,9 +32,9 @@
               'upgrade',
               'menuItem',
               {
-                costly: upgrade.cost.isGreaterThan(funds),
+                costly: upgrade.cost.gt(funds),
                 hidden:
-                  upgrade.cost.isGreaterThan(funds.multipliedBy(1.5))
+                  upgrade.cost.gt(funds.times(1.5))
                   || (assets[upgrade.entity] || 0) < (upgrade.count || 0),
               },
             ]"
@@ -42,7 +42,7 @@
             :key="key">
             <span class="txtLabel">SHIFT + {{ availableAssets[upgrade.entity].key }}</span>
             {{ upgrade.name }}
-            <span class="txtLabel">€{{ upgrade.cost.toFormat() }}</span>
+            <span class="txtLabel">€{{ upgrade.cost.toString() }}</span>
             <span class="description">
               {{ upgrade.description }}
             </span>
@@ -70,7 +70,7 @@
   font-size: 22px;
 
   &:after {
-    content: "";
+    content: '';
     display: table;
     clear: both;
   }
@@ -80,7 +80,8 @@
   display: block;
 }
 
-.assets, .upgrades {
+.assets,
+.upgrades {
   width: 50%;
 
   .txtLabel {
@@ -100,14 +101,15 @@
   padding: 20px 0 0 10px;
 }
 
-.asset, .upgrade {
+.asset,
+.upgrade {
   display: block;
 
   margin-bottom: 5px;
   margin-left: 0;
 
   &.costly {
-    opacity: .5;
+    opacity: 0.5;
   }
 
   &.hidden {
@@ -135,10 +137,29 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
-import { findKey as _findKey } from 'lodash-es'
+import {
+  findKey as _findKey,
+  isNumber as _isNumber,
+  sampleSize as _sampleSize,
+} from 'lodash-es'
 
 import ActionBar from '~/components/ActionBar'
 import Information from '~/components/Keycler/Information'
+
+import {
+  each as _each,
+  map as _map,
+  isString as _isString,
+  isArray as _isArray,
+  intersection as _intersection,
+  random as _random,
+  uniq as _uniq,
+  defer as _defer,
+  after as _after,
+  reject as _reject,
+  isEmpty as _isEmpty,
+} from 'lodash-es'
+// ENDTEST
 
 let loopActive = false
 let loopBreak = false
@@ -153,9 +174,7 @@ export default {
     fps: 1,
   }),
   computed: {
-    ...mapGetters('theme', [
-      'currentTheme',
-    ]),
+    ...mapGetters('theme', ['currentTheme']),
 
     ...mapGetters('keycler', [
       'funds',
@@ -168,21 +187,11 @@ export default {
       'availableUpgrades',
     ]),
 
-    ...mapGetters('keytsh', [
-      'keytshCollapsed',
-    ]),
+    ...mapGetters('keytsh', ['keytshCollapsed']),
   },
   methods: {
-    ...mapActions('keycler', [
-      'operationalActivity',
-      'collectFups',
-
-      'buyAsset',
-      'buyUpgrade',
-    ]),
-    ...mapActions('keytsh', [
-      'toggleKeytshCollapse',
-    ]),
+    ...mapActions('keycler', ['operationalActivity', 'collectFups', 'buyAsset', 'buyUpgrade']),
+    ...mapActions('keytsh', ['toggleKeytshCollapse']),
 
     keyOperation(evt) {
       if (this.keytshCollapsed) {
@@ -209,7 +218,7 @@ export default {
                 if (upgradeUid) {
                   const upgrade = this.availableUpgrades[upgradeUid]
 
-                  if (upgrade.cost.isLessThanOrEqualTo(this.funds)) {
+                  if (upgrade.cost.lte(this.funds)) {
                     this.buyUpgrade(upgradeUid)
                   }
                 }
@@ -220,7 +229,7 @@ export default {
               if (assetUid) {
                 const asset = this.availableAssets[assetUid]
 
-                if (asset.cost.isLessThanOrEqualTo(this.funds)) {
+                if (asset.cost.lte(this.funds)) {
                   this.buyAsset(assetUid)
                 }
               }
@@ -271,7 +280,7 @@ export default {
         const delta = now - then
 
         if (delta > interval) {
-          then = now - (delta % interval)
+          then = now - delta % interval
 
           this.gameLogic()
         }
